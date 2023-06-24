@@ -1,4 +1,3 @@
-
 let item_n = 3;
 
 document.getElementById("append_form").addEventListener("submit", e => {
@@ -34,23 +33,44 @@ document.getElementById("append_form").addEventListener("submit", e => {
     });
 });
 
-document.getElementById("result_btn").addEventListener("click", e => {
+function lottery(list) {
+    let all_events = [];
+    list.forEach(item => {
+        for (i = 0; i < Number(item.weight); i++) {
+            all_events.push(item.name);
+        }
+    });
+    return all_events[Math.floor(Math.random() * all_events.length)];
+}
+
+function result_disp(result){
+    document.querySelector("#result div").innerHTML = result;
+}
+
+async function roulette(list, n = 20, play = true) {
+    return await new Promise(function (resolve) {
+        t = 2*1000;//秒
+        if (!play){
+            result_disp(lottery(list));
+        }else{
+            let dram_role = new Audio("./resource/SE/ドラムロール.mp3");
+            dram_role.volume *= 0.6;
+            dram_role.play();
+            for(i=0;i<n;i++){
+                setTimeout(function () { result_disp(lottery(list)) }, (t/n)*i);
+            }
+            setTimeout(dram_role.pause,t);
+        }
+    })
+}
+
+document.getElementById("result_btn").addEventListener("click", async (e) => {
     const tbody = document.querySelector('#items tbody');
     let item_names = [...tbody.querySelectorAll('.item_name')];
     let item_weights = [...tbody.querySelectorAll('.item_weight')];
-    let items = [];
-    item_names.map((item_name, idx) => {
-        items.push({ name: [item_name.innerHTML], weight: item_weights[idx].innerHTML })
-    });
-    let all_events = [];
-    items.forEach(item => {
-        console.log(item.name)
-        for (i = 0; i < Number(item.weight); i++) {
-            all_events.push(item.name);
-            console.log(item.name)
-        }
-    });
-
-    let result = all_events[Math.floor(Math.random() * all_events.length)];
-    document.querySelector("#result div").innerHTML = result;
+    let items = item_names.map((item_name, idx) => ({
+        name: [item_name.innerHTML],
+        weight: item_weights[idx].innerHTML,
+    }));
+    await roulette(items);
 });
