@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 id="title">Game Chooser</h1>
+    <form id="append_form">
+        <h3>追加 :</h3>
+        <label for="name">ゲームの名前</label>
+        <input type="text" name="name" id="name" autocomplete="off" placeholder="例）マインクラフト">
+        <label for="weight">重み</label>
+        <input type="number" name="weight" id="weight" autocomplete="off" step="1" value="1">
+        <button id="append" type="submit" class="button">追加</button>
+    </form>
+    <table id="items">
+        <thead>
+            <tr>
+                <th>ゲームの名前</th>
+                <th>重み</th>
+                <th><button type="button" class="button del" value="-1">リセット</button></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <div id="result">
+        <button id="result_btn" type="button" class="button">抽選</button>
+        <div></div>
+    </div>
+</body>
+<script src="script.js"></script>
+</html>
