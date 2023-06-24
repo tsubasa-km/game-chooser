@@ -49,22 +49,29 @@ function result_disp(result){
 
 async function roulette(list, n = 20, play = true) {
     return await new Promise(function (resolve) {
-        t = 2*1000;//秒
+        t = 2.5*1000;//秒
         if (!play){
             result_disp(lottery(list));
         }else{
             let dram_role = new Audio("./resource/SE/ドラムロール.mp3");
-            dram_role.volume *= 0.6;
+            let decid = new Audio("./resource/SE/ロールの閉め.mp3");
+            dram_role.volume *= 0.2;
+            decid.volume *= 0.2;
             dram_role.play();
+
             for(i=0;i<n;i++){
-                setTimeout(function () { result_disp(lottery(list)) }, (t/n)*i);
+                // setTimeout(function () { result_disp(lottery(list)) }, (t/n)*i);
             }
-            setTimeout(dram_role.pause,t);
+            setTimeout(function(){dram_role.pause()},t);
+            setTimeout(function(){decid.play();resolve(0)},t);
+
         }
     })
 }
 
-document.getElementById("result_btn").addEventListener("click", async (e) => {
+var result_btn = document.getElementById("result_btn")
+result_btn.addEventListener("click", async (e) => {
+    result_btn.disabled = true;
     const tbody = document.querySelector('#items tbody');
     let item_names = [...tbody.querySelectorAll('.item_name')];
     let item_weights = [...tbody.querySelectorAll('.item_weight')];
@@ -73,4 +80,5 @@ document.getElementById("result_btn").addEventListener("click", async (e) => {
         weight: item_weights[idx].innerHTML,
     }));
     await roulette(items);
+    result_btn.disabled = false;
 });
